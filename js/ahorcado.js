@@ -283,6 +283,7 @@ function quitarTilde(letra) {
 function initGame() {
    //# OBTENGO LAS PROPIEDADES DEL OBJETO CATEGORIAS
    const dificultades = Object.keys(window.categorias);
+   const pausasvg = document.querySelector("#pausasvg");
 
    //# OBTENGO LA DIFFICULTAD ELEGIDA
    const dificultadElegida = dificultades[window.dificultad];
@@ -291,7 +292,7 @@ function initGame() {
 
    if (jugadorEstado == false) {
       deteccionTeclasActivada = false;
-
+      pausasvg.disabled = true;
       window.turnoJugador = document.querySelector(".state-nodisplay2");
       turnoJugador.classList.remove("state-nodisplay2");
 
@@ -320,6 +321,8 @@ function initGame() {
       if (contTurnos == 1) {
          setTimeout(function () {
             deteccionTeclasActivada = true;
+            pausasvg.disabled = false;
+
             turnoJugador.classList.add("no-display");
 
             if (dificultadElegida === "Facil") {
@@ -332,6 +335,7 @@ function initGame() {
          }, 5000);
       } else if (contTurnos == 2) {
          deteccionTeclasActivada = true;
+         pausasvg.disabled = false;
          turnoJugador.classList.add("no-display");
 
          if (dificultadElegida === "Facil") {
@@ -344,6 +348,7 @@ function initGame() {
       } else if (contTurnos == 3) {
          setTimeout(function () {
             deteccionTeclasActivada = true;
+            pausasvg.disabled = false;
             turnoJugador.classList.add("no-display");
 
             if (dificultadElegida === "Facil") {
@@ -356,6 +361,7 @@ function initGame() {
          }, 5000);
       } else if (contTurnos == 4) {
          deteccionTeclasActivada = true;
+         pausasvg.disabled = false;
          turnoJugador.classList.add("no-display");
 
          if (dificultadElegida === "Facil") {
@@ -368,6 +374,7 @@ function initGame() {
       } else if (contTurnos == 5) {
          setTimeout(function () {
             deteccionTeclasActivada = true;
+            pausasvg.disabled = false;
             turnoJugador.classList.add("no-display");
 
             if (dificultadElegida === "Facil") {
@@ -380,6 +387,7 @@ function initGame() {
          }, 5000);
       } else if (contTurnos == 6) {
          deteccionTeclasActivada = true;
+         pausasvg.disabled = false;
          turnoJugador.classList.add("no-display");
 
          if (dificultadElegida === "Facil") {
@@ -390,6 +398,7 @@ function initGame() {
             startCountdown(20);
          }
       } else if (contTurnos == 7) {
+         pausasvg.disabled = false;
          youWin();
       }
    } else {
@@ -929,6 +938,33 @@ abandonar.addEventListener("click", function () {
    fondoOscuro.style.display = "none";
 
    deteccionTeclasActivada = true;
+
+   const jugador1 = document.querySelector("#jugador1");
+   jugador1.textContent = "Valor";
+
+   const jugador2 = document.querySelector("#jugador2");
+   jugador2.classList.add("no-display");
+
+   const letrasAcertadas2 = document.querySelector("#letrasAcertadas2");
+   letrasAcertadas2.classList.add("no-display");
+
+   const letrasIncorrectas2 = document.querySelector("#letrasIncorrectas2");
+   letrasIncorrectas2.classList.add("no-display");
+
+   const presicion2 = document.querySelector("#presicion2");
+   presicion2.classList.add("no-display");
+
+   const puntuacionEst2 = document.querySelector("#puntuacionEst2");
+   puntuacionEst2.classList.add("no-display");
+
+   const puntosGanados2 = document.querySelector("#puntosGanados2");
+   puntosGanados2.classList.add("no-display");
+
+   const puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
+   puntosPerdidos2.classList.add("no-display");
+
+   const tiempoDuracion2 = document.querySelector("#tiempoDuracion2");
+   tiempoDuracion2.classList.add("no-display");
 
    window.abandonarEstado = true;
 });
