@@ -192,7 +192,7 @@ function play3(dir) {
    audio3.play();
 }
 
-//# FUNCION PARA EL CLICL
+//# FUNCION PARA EL CLICK
 function play4(dir) {
    audio4 = new Audio(dir);
    audio4.play();
@@ -218,10 +218,26 @@ function teclado(btn, palabra) {
             puntuacionValor += 10;
 
             const letrasAcertadas = document.querySelector("#letrasAcertadas");
-            aciertos++;
-            totalLetras++;
-            letrasAcertadas.textContent = aciertos;
-            puntosGanados += 10;
+            if (jugadorEstado == false) {
+               contTurnos % 2 == 0 ? aciertos_j2++ : aciertos_j1++;
+               contTurnos % 2 == 0
+                  ? (totalLetras_j2 += 1)
+                  : (totalLetras_j1 += 1);
+               contTurnos % 2 == 0
+                  ? (puntosGanados_j2 += 10)
+                  : (puntosGanados_j1 += 10);
+               contTurnos % 2 == 0
+                  ? (puntuacion_j1 += 10)
+                  : (puntuacion_j2 += 10);
+               contTurnos % 2 == 0
+                  ? (puntuacionValor_j2 += 10)
+                  : (puntuacionValor_j1 += 10);
+            } else {
+               aciertos++;
+               totalLetras++;
+               letrasAcertadas.textContent = aciertos;
+               puntosGanados += 10;
+            }
             updatePuntuacion();
          }
       }
@@ -238,10 +254,21 @@ function teclado(btn, palabra) {
          play3("audio/error.mp3");
 
          const letrasIncorrectas = document.querySelector("#letrasIncorrectas");
-         errores++;
-         totalLetras++;
-         letrasIncorrectas.textContent = errores;
-         puntosPerdidos += 10;
+         if (jugadorEstado == false) {
+            contTurnos % 2 == 0 ? errores_j2++ : errores_j1++;
+            contTurnos % 2 == 0
+               ? (puntosPerdidos_j2 += 10)
+               : (puntosPerdidos_j1 += 10);
+            contTurnos % 2 == 0 ? (totalLetras_j2 += 1) : (totalLetras_j1 += 1);
+            contTurnos % 2 == 0
+               ? (puntuacionValor_j2 -= 10)
+               : (puntuacionValor_j1 -= 10);
+         } else {
+            errores++;
+            totalLetras++;
+            letrasIncorrectas.textContent = errores;
+            puntosPerdidos += 10;
+         }
          drawGame();
       }
 
@@ -286,7 +313,7 @@ function initGame() {
    const pausasvg = document.querySelector("#pausasvg");
 
    //# OBTENGO LA DIFFICULTAD ELEGIDA
-   const dificultadElegida = dificultades[window.dificultad];
+   window.dificultadElegida = dificultades[window.dificultad];
 
    pausaEstado = false;
 
@@ -346,19 +373,17 @@ function initGame() {
             startCountdown(20);
          }
       } else if (contTurnos == 3) {
-         setTimeout(function () {
-            deteccionTeclasActivada = true;
-            pausasvg.disabled = false;
-            turnoJugador.classList.add("no-display");
+         deteccionTeclasActivada = true;
+         pausasvg.disabled = false;
+         turnoJugador.classList.add("no-display");
 
-            if (dificultadElegida === "Facil") {
-               startCountdown(30);
-            } else if (dificultadElegida === "Medio") {
-               startCountdown(25);
-            } else if (dificultadElegida === "Dificil") {
-               startCountdown(20);
-            }
-         }, 5000);
+         if (dificultadElegida === "Facil") {
+            startCountdown(30);
+         } else if (dificultadElegida === "Medio") {
+            startCountdown(25);
+         } else if (dificultadElegida === "Dificil") {
+            startCountdown(20);
+         }
       } else if (contTurnos == 4) {
          deteccionTeclasActivada = true;
          pausasvg.disabled = false;
@@ -372,19 +397,17 @@ function initGame() {
             startCountdown(20);
          }
       } else if (contTurnos == 5) {
-         setTimeout(function () {
-            deteccionTeclasActivada = true;
-            pausasvg.disabled = false;
-            turnoJugador.classList.add("no-display");
+         deteccionTeclasActivada = true;
+         pausasvg.disabled = false;
+         turnoJugador.classList.add("no-display");
 
-            if (dificultadElegida === "Facil") {
-               startCountdown(30);
-            } else if (dificultadElegida === "Medio") {
-               startCountdown(25);
-            } else if (dificultadElegida === "Dificil") {
-               startCountdown(20);
-            }
-         }, 5000);
+         if (dificultadElegida === "Facil") {
+            startCountdown(30);
+         } else if (dificultadElegida === "Medio") {
+            startCountdown(25);
+         } else if (dificultadElegida === "Dificil") {
+            startCountdown(20);
+         }
       } else if (contTurnos == 6) {
          deteccionTeclasActivada = true;
          pausasvg.disabled = false;
@@ -493,20 +516,78 @@ function initGame() {
 }
 
 function updatePuntuacion() {
-   const puntuacionValorElement = document.getElementById("puntuacionValor");
+   if (jugadorEstado == true) {
+      const puntuacionValorElement = document.getElementById("puntuacionValor");
 
-   puntuacionValorElement.textContent = window.puntuacionValor;
-
-   puntuacionEst = document.querySelector("#puntuacionEst");
-   puntuacionEst.textContent = window.puntuacionValor;
-
-   if (window.puntuacionValor == 0) {
-      if (jugadorEstado == false) {
-         youWin();
-      } else {
-         gameOver();
+      if (window.puntuacionValor < 0) {
+         window.puntuacionValor = 0;
       }
-      return;
+      puntuacionValorElement.textContent = window.puntuacionValor;
+
+      puntuacionEst = document.querySelector("#puntuacionEst");
+      puntuacionEst.textContent = window.puntuacionValor;
+
+      if (window.puntuacionValor == 0) {
+         gameOver();
+         return;
+      }
+   } else {
+      const puntuacionValorElement = document.getElementById("puntuacionValor");
+      contTurnos % 2 == 0
+         ? (puntuacionValorElement.textContent = puntuacionValor_j2)
+         : (puntuacionValorElement.textContent = puntuacionValor_j1);
+
+      if (window.puntuacionValor_j1 == 0) {
+         play3("audio/lose.mp3");
+         deteccionTeclasActivada = true;
+         window.gana_player = document.querySelector(".state-nodisplay4");
+         gana_player.classList.remove("state-nodisplay4");
+         const gana = document.createElement("div");
+         gana.style.fontSize = "4.5rem";
+         gana.textContent = "Gana";
+
+         const player = document.createElement("div");
+         player.style.fontSize = "4.5rem";
+         player.textContent = jugador2;
+
+         gana_player.append(gana);
+         gana_player.append(player);
+         gana_player.classList.add("stateAnimation", "youWin");
+         clearInterval(countdownInterval);
+
+         setTimeout(function () {
+            deteccionTeclasActivada = false;
+            gana_player.classList.add("state-nodisplay4");
+            calcularEstadisticas();
+         }, 4000);
+         return;
+      }
+
+      if (window.puntuacionValor_j2 == 0) {
+         play3("audio/lose.mp3");
+         deteccionTeclasActivada = true;
+         window.gana_player = document.querySelector(".state-nodisplay4");
+         gana_player.classList.remove("state-nodisplay4");
+         const gana = document.createElement("div");
+         gana.style.fontSize = "4.5rem";
+         gana.textContent = "Gana";
+
+         const player = document.createElement("div");
+         player.style.fontSize = "4.5rem";
+         player.textContent = jugador1;
+
+         gana_player.append(gana);
+         gana_player.append(player);
+         gana_player.classList.add("stateAnimation", "youWin");
+         clearInterval(countdownInterval);
+
+         setTimeout(function () {
+            deteccionTeclasActivada = false;
+            gana_player.classList.add("state-nodisplay4");
+            calcularEstadisticas();
+         }, 4000);
+         return;
+      }
    }
 }
 
@@ -546,6 +627,9 @@ function newGame() {
       removeChilds(gameOver);
    }
 
+   if (jugadorEstado == false) {
+      turnoJugador.classList.add("state-nodisplay2");
+   }
    initGame();
 
    return;
@@ -623,7 +707,11 @@ function drawGame() {
       pincel.moveTo(75, 350);
       pincel.lineTo(105, 320);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
    if (window.intento == 2) {
@@ -633,7 +721,11 @@ function drawGame() {
       pincel.moveTo(257, 3);
       pincel.lineTo(103, 3);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
 
@@ -642,7 +734,11 @@ function drawGame() {
       pincel.moveTo(255, 80);
       pincel.lineTo(255, 0);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
 
@@ -651,7 +747,11 @@ function drawGame() {
       pincel.moveTo(255, 50);
       pincel.arc(255, 110, 30, -Math.PI / 2, (Math.PI * 3) / 2, true);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
    if (window.intento == 5) {
@@ -659,7 +759,11 @@ function drawGame() {
       pincel.moveTo(255, 225);
       pincel.lineTo(255, 140);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
 
@@ -668,7 +772,11 @@ function drawGame() {
       pincel.moveTo(275, 200);
       pincel.lineTo(255, 150);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
 
@@ -677,7 +785,11 @@ function drawGame() {
       pincel.moveTo(235, 200);
       pincel.lineTo(255, 150);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
 
@@ -686,7 +798,11 @@ function drawGame() {
       pincel.moveTo(275, 270);
       pincel.lineTo(255, 225);
 
-      window.puntuacionValor -= 10;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+      } else {
+         window.puntuacionValor -= 10;
+      }
       updatePuntuacion();
    }
 
@@ -695,13 +811,35 @@ function drawGame() {
       pincel.moveTo(235, 270);
       pincel.lineTo(255, 225);
 
-      window.puntuacionValor -= 10;
-      updatePuntuacion();
       if (jugadorEstado == false) {
-         youWin();
+         contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
+         play3("audio/lose.mp3");
+         deteccionTeclasActivada = true;
+         window.gana_player = document.querySelector(".state-nodisplay4");
+         gana_player.classList.remove("state-nodisplay4");
+         const gana = document.createElement("div");
+         gana.style.fontSize = "4.5rem";
+         gana.textContent = "Gana";
+
+         const player = document.createElement("div");
+         player.style.fontSize = "4.5rem";
+         player.textContent = contTurnos % 2 == 0 ? jugador1 : jugador2;
+
+         gana_player.append(gana);
+         gana_player.append(player);
+         gana_player.classList.add("stateAnimation", "youWin");
+         clearInterval(countdownInterval);
+
+         setTimeout(function () {
+            deteccionTeclasActivada = false;
+            gana_player.classList.add("state-nodisplay4");
+            calcularEstadisticas();
+         }, 4000);
       } else {
+         window.puntuacionValor -= 10;
          gameOver();
       }
+      updatePuntuacion();
    }
 
    pincel.lineWidth = 6;
@@ -794,65 +932,63 @@ function youWin() {
          round = document.querySelector(".state-nodisplay");
          round.classList.remove("state-nodisplay");
 
-         const you = document.createElement("div");
-         you.style.fontSize = "3.5rem";
-         you.textContent = "Turno de: ";
+         if (contTurnos < 6) {
+            const you = document.createElement("div");
+            you.style.fontSize = "3.5rem";
+            you.textContent = "Turno de: ";
 
-         const win = document.createElement("div");
-         win.style.fontSize = "3.5rem";
-         win.textContent = contTurnos % 2 == 0 ? jugador1 : jugador2;
+            const win = document.createElement("div");
+            win.style.fontSize = "3.5rem";
 
-         round.append(you);
-         round.append(win);
-         round.classList.add("stateAnimation", "youWin");
-         window.endgame = true;
+            win.textContent = contTurnos % 2 == 0 ? jugador1 : jugador2;
+            play3("../audio/turno.wav");
 
-         document.getElementById("nivelTexto").textContent = "Turno de: ";
-         if (contTurnos == 1) {
-            document.getElementById("nivelValor").textContent = jugador2;
-         } else if (contTurnos == 2) {
-            document.getElementById("nivelValor").textContent = jugador1;
-         } else if (contTurnos == 3) {
-            document.getElementById("nivelValor").textContent = jugador2;
-         } else if (contTurnos == 4) {
-            document.getElementById("nivelValor").textContent = jugador1;
-         } else if (contTurnos == 5) {
-            document.getElementById("nivelValor").textContent = jugador2;
-         } else if (contTurnos == 6) {
-            document.getElementById("nivelValor").textContent = jugador1;
+            round.append(you);
+            round.append(win);
+            round.classList.add("stateAnimation", "youWin");
+            document.getElementById("nivelTexto").textContent = "Turno de: ";
+            contTurnos % 2 == 0
+               ? (document.getElementById("nivelValor").textContent = jugador1)
+               : (document.getElementById("nivelValor").textContent = jugador2);
          }
-
-         setTimeout(function () {
-            turnoJugador.classList.add("state-nodisplay2");
-            newGame();
-         }, 4000);
-      } else {
-         const youWin = document.querySelector(".state-nodisplay");
-         youWin.classList.remove("state-nodisplay");
-
-         const you = document.createElement("div");
-         you.style.fontSize = "4.5rem";
-         you.textContent = "END";
-
-         const win = document.createElement("div");
-         win.style.fontSize = "4.5rem";
-         win.textContent = "GAME!";
-
-         youWin.append(you);
-         youWin.append(win);
-
-         youWin.classList.add("stateAnimation", "youWin");
          window.endgame = true;
-
-         const pausasvg = document.querySelector("#pausasvg");
          pausasvg.disabled = true;
-         setTimeout(function () {
-            pausasvg.disabled = false;
-            audio.currentTime = 0;
-            audio.play();
-            youWin.classList.add("no-display");
-            calcularEstadisticas();
-         }, 6500);
+
+         if (contTurnos >= 6) {
+            round.classList.add("state-nodisplay");
+            const youWin = document.querySelector(".state-nodisplay3");
+            youWin.classList.remove("state-nodisplay3");
+            play3("../audio/you-win.wav");
+            const you = document.createElement("div");
+            you.style.fontSize = "4.5rem";
+            you.textContent = "END";
+
+            const win = document.createElement("div");
+            win.style.fontSize = "4.5rem";
+            win.textContent = "GAME!";
+
+            youWin.append(you);
+            youWin.append(win);
+
+            youWin.classList.add("stateAnimation", "youWin");
+            window.endgame = true;
+
+            const pausasvg = document.querySelector("#pausasvg");
+            pausasvg.disabled = true;
+
+            setTimeout(function () {
+               pausasvg.disabled = false;
+               audio.currentTime = 0;
+               audio.play();
+               youWin.classList.add("no-display");
+               calcularEstadisticas();
+            }, 6500);
+         } else {
+            setTimeout(function () {
+               turnoJugador.classList.add("state-nodisplay2");
+               newGame();
+            }, 4000);
+         }
       }
    }
    return;
@@ -867,6 +1003,9 @@ document.addEventListener(
             document.getElementById(name.toLowerCase()).click();
          }
       }
+      if (event.key === "Enter") {
+         event.preventDefault();
+      }
    },
    false
 );
@@ -874,7 +1013,6 @@ document.addEventListener(
 const newgame = document.querySelector("#new");
 const abandonar = document.querySelector("#des");
 newgame.addEventListener("click", function () {
-   play4("../audio/click.mp3");
    newgame.classList.add("no-display");
    abandonar.classList.add("no-display");
 
@@ -882,10 +1020,46 @@ newgame.addEventListener("click", function () {
 
    estadoYouWin = false;
 
-   puntuacionValor = inicial;
-   nivel = 1;
-   document.getElementById("nivelValor").textContent = window.nivel;
-   newGame();
+   if (jugadorEstado == true) {
+      play4("../audio/click.mp3");
+      puntuacionValor = inicial;
+      nivel = 1;
+      document.getElementById("nivelValor").textContent = window.nivel;
+      newGame();
+   } else {
+      window.newTurno = document.querySelector(".state-nodisplay5");
+      newTurno.classList.remove("state-nodisplay5");
+
+      const turno = document.createElement("div");
+      turno.style.fontSize = "3.2rem";
+      turno.textContent = "Turno de: ";
+      const jugador = document.createElement("div");
+      jugador.style.fontSize = "3.2rem";
+      jugador.textContent = jugador1;
+
+      newTurno.append(turno);
+      newTurno.append(jugador);
+      newTurno.classList.add("stateAnimation", "youWin");
+
+      if (dificultadElegida === "Facil") {
+         countdownElement.textContent = 30;
+      } else if (dificultadElegida === "Medio") {
+         countdownElement.textContent = 25;
+      } else if (dificultadElegida === "Dificil") {
+         countdownElement.textContent = 20;
+      }
+
+      setTimeout(function () {
+         // newTurno = document.querySelector(".stateAnimation");
+         // newTurno.classList.remove(".gameOver");
+         // newTurno.classList.remove(".youWin");
+         // newTurno.classList.remove(".stateAnimation");
+         newTurno.classList = "state-nodisplay5";
+         removeChilds(newTurno);
+         contTurnos++;
+         newGame();
+      }, 4500);
+   }
 });
 abandonar.addEventListener("click", function () {
    play4("../audio/click.mp3");
@@ -939,33 +1113,36 @@ abandonar.addEventListener("click", function () {
 
    deteccionTeclasActivada = true;
 
-   const jugador1 = document.querySelector("#jugador1");
+   jugador1 = document.querySelector("#jugador1");
    jugador1.textContent = "Valor";
 
-   const jugador2 = document.querySelector("#jugador2");
+   jugador2 = document.querySelector("#jugador2");
    jugador2.classList.add("no-display");
 
-   const letrasAcertadas2 = document.querySelector("#letrasAcertadas2");
-   letrasAcertadas2.classList.add("no-display");
+   letrasAcertadas_j2 = document.querySelector("#letrasAcertadas2");
+   letrasAcertadas_j2.classList.add("no-display");
 
-   const letrasIncorrectas2 = document.querySelector("#letrasIncorrectas2");
-   letrasIncorrectas2.classList.add("no-display");
+   letrasIncorrectas_j2 = document.querySelector("#letrasIncorrectas2");
+   letrasIncorrectas_j2.classList.add("no-display");
 
-   const presicion2 = document.querySelector("#presicion2");
-   presicion2.classList.add("no-display");
+   presicion_j2 = document.querySelector("#presicion2");
+   presicion_j2.classList.add("no-display");
 
-   const puntuacionEst2 = document.querySelector("#puntuacionEst2");
-   puntuacionEst2.classList.add("no-display");
+   puntuacionEst_j2 = document.querySelector("#puntuacionEst2");
+   puntuacionEst_j2.classList.add("no-display");
 
-   const puntosGanados2 = document.querySelector("#puntosGanados2");
+   puntosGanados2 = document.querySelector("#puntosGanados2");
    puntosGanados2.classList.add("no-display");
 
-   const puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
+   puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
    puntosPerdidos2.classList.add("no-display");
 
-   const tiempoDuracion2 = document.querySelector("#tiempoDuracion2");
-   tiempoDuracion2.classList.add("no-display");
+   duracionTotal_j2 = document.querySelector("#tiempoDuracion2");
+   duracionTotal_j2.classList.add("no-display");
 
+   gana_player.classList.add("no-display");
+
+   turnoJugador.classList.add("state-nodisplay2");
    window.abandonarEstado = true;
 });
 
@@ -1064,7 +1241,11 @@ function startCountdown(duration) {
    updateCountdown(seconds);
 
    window.countdownInterval = setInterval(function () {
-      tiempoDuracion++;
+      if (jugadorEstado == false) {
+         contTurnos % 2 == 0 ? tiempoDuracion_j2++ : tiempoDuracion_j1++;
+      } else {
+         tiempoDuracion++;
+      }
       seconds--;
 
       if (seconds === 5) {
@@ -1074,10 +1255,11 @@ function startCountdown(duration) {
       if (seconds >= 0) {
          updateCountdown(seconds);
       } else {
-         tiempoDuracion--;
          if (jugadorEstado == false) {
+            contTurnos % 2 == 0 ? tiempoDuracion_j2++ : tiempoDuracion_j1++;
             youWin();
          } else {
+            tiempoDuracion++;
             gameOver();
          }
          return;
@@ -1142,7 +1324,7 @@ fondoOscuro.addEventListener("click", function () {
    newgame.classList.add("no-display");
    abandonar.classList.add("no-display");
 
-   if (estadoYouWin != true && endgame != true) {
+   if (estadoYouWin != true && endgame != true && jugadorEstado == true) {
       if (pausaEstado == true || abandonarEstado == true) {
          startCountdown(window.seconds);
       }
@@ -1196,9 +1378,10 @@ facil.addEventListener("click", function () {
 
    window.dificultad = 0;
    window.puntuacionValor = 70;
+   window.puntuacionValor_j1 = 70;
+   window.puntuacionValor_j2 = 70;
    window.inicial = puntuacionValor;
    const puntuacionValorElement = document.getElementById("puntuacionValor");
-   puntuacionValorElement.textContent = puntuacionValor;
 
    window.aciertos = 0;
    window.errores = 0;
@@ -1211,9 +1394,12 @@ facil.addEventListener("click", function () {
    if (jugadorEstado == true) {
       document.getElementById("nivelTexto").textContent = "Nivel: ";
       document.getElementById("nivelValor").textContent = window.nivel;
+      puntuacionValorElement.textContent = puntuacionValor;
       window.maxNivel = 6;
       newGame();
    } else {
+      puntuacionValorElement.textContent = puntuacion_j1;
+      turnoJugador.classList.add("state-nodisplay2");
       document.getElementById("nivelTexto").textContent = "Turno de: ";
       document.getElementById("nivelValor").textContent = jugador1;
       window.maxNivel = 4;
@@ -1258,9 +1444,10 @@ medio.addEventListener("click", function () {
 
    window.dificultad = 1;
    window.puntuacionValor = 60;
+   window.puntuacionValor_j1 = 60;
+   window.puntuacionValor_j2 = 60;
    window.inicial = puntuacionValor;
    const puntuacionValorElement = document.getElementById("puntuacionValor");
-   puntuacionValorElement.textContent = puntuacionValor;
 
    window.aciertos = 0;
    window.errores = 0;
@@ -1271,14 +1458,17 @@ medio.addEventListener("click", function () {
    window.nivel = 1;
 
    if (jugadorEstado == true) {
+      puntuacionValorElement.textContent = puntuacionValor;
       document.getElementById("nivelTexto").textContent = "Nivel: ";
       document.getElementById("nivelValor").textContent = window.nivel;
       window.maxNivel = 6;
       newGame();
    } else {
+      puntuacionValorElement.textContent = puntuacion_j1;
       document.getElementById("nivelTexto").textContent = "Turno de: ";
       document.getElementById("nivelValor").textContent = jugador1;
       window.maxNivel = 4;
+      turnoJugador.classList.add("state-nodisplay2");
 
       addWord.classList.add("no-display");
       addWord.classList.remove("addWord");
@@ -1320,9 +1510,10 @@ dificil.addEventListener("click", function () {
 
    window.dificultad = 2;
    window.puntuacionValor = 50;
+   window.puntuacionValor_j1 = 50;
+   window.puntuacionValor_j2 = 50;
    window.inicial = puntuacionValor;
    const puntuacionValorElement = document.getElementById("puntuacionValor");
-   puntuacionValorElement.textContent = puntuacionValor;
 
    window.aciertos = 0;
    window.errores = 0;
@@ -1333,11 +1524,14 @@ dificil.addEventListener("click", function () {
    window.nivel = 1;
 
    if (jugadorEstado == true) {
+      puntuacionValorElement.textContent = puntuacionValor;
       document.getElementById("nivelTexto").textContent = "Nivel: ";
       document.getElementById("nivelValor").textContent = window.nivel;
       window.maxNivel = 6;
       newGame();
    } else {
+      puntuacionValorElement.textContent = puntuacion_j1;
+      turnoJugador.classList.add("state-nodisplay2");
       document.getElementById("nivelTexto").textContent = "Turno de: ";
       document.getElementById("nivelValor").textContent = jugador1;
       window.maxNivel = 4;
@@ -1373,7 +1567,6 @@ function calcularEstadisticas() {
       tablaEstadisticas.style.display = "block";
 
       presicion = document.querySelector("#presicion");
-      porcentajePrecision = 100;
       porcentajePrecision = (aciertos / totalLetras) * 100;
 
       if (totalLetras == 0) {
@@ -1382,54 +1575,69 @@ function calcularEstadisticas() {
          presicion.textContent = porcentajePrecision.toFixed(0) + "%";
       }
    } else {
+      const tablaEstadisticas = document.querySelector("#tablaEstadisticas");
+      tablaEstadisticas.style.display = "block";
+
       player1 = document.querySelector("#jugador1");
       player1.textContent = window.jugador1;
-
       player2 = document.querySelector("#jugador2");
       player2.classList.remove("no-display");
       player2.textContent = window.jugador2;
 
-      letrasAcertadas2 = document.querySelector("#letrasAcertadas2");
-      letrasAcertadas2.classList.remove("no-display");
+      const letrasAcertadas = document.querySelector("#letrasAcertadas");
+      letrasAcertadas.textContent = window.aciertos_j1;
+      window.letrasAcertadas_j2 = document.querySelector("#letrasAcertadas2");
+      letrasAcertadas_j2.classList.remove("no-display");
+      letrasAcertadas_j2.textContent = window.aciertos_j2;
 
-      letrasIncorrectas2 = document.querySelector("#letrasIncorrectas2");
-      letrasIncorrectas2.classList.remove("no-display");
+      const letrasIncorrectas = document.querySelector("#letrasIncorrectas");
+      letrasIncorrectas.textContent = window.errores_j1;
+      window.letrasIncorrectas_j2 = document.querySelector(
+         "#letrasIncorrectas2"
+      );
+      letrasIncorrectas_j2.classList.remove("no-display");
+      letrasIncorrectas_j2.textContent = window.errores_j2;
 
-      presicion2 = document.querySelector("#presicion2");
-      presicion2.classList.remove("no-display");
-
-      puntuacionEst2 = document.querySelector("#puntuacionEst2");
-      puntuacionEst2.classList.remove("no-display");
-
-      puntosGanados2 = document.querySelector("#puntosGanados2");
-      puntosGanados2.classList.remove("no-display");
-
-      puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
-      puntosPerdidos2.classList.remove("no-display");
-
-      tiempoDuracion2 = document.querySelector("#tiempoDuracion2");
-      tiempoDuracion2.classList.remove("no-display");
+      window.puntuacionEst_j1 = document.querySelector("#puntuacionEst");
+      puntuacionEst_j1.textContent = window.puntuacionValor_j1;
+      window.puntuacionEst_j2 = document.querySelector("#puntuacionEst2");
+      puntuacionEst_j2.classList.remove("no-display");
+      puntuacionEst_j2.textContent = window.puntuacionValor_j2;
 
       puntosWin = document.querySelector("#puntosGanados");
-      puntosWin.textContent = window.puntosGanados;
+      puntosWin.textContent = window.puntosGanados_j1;
+      puntosGanados2 = document.querySelector("#puntosGanados2");
+      puntosGanados2.classList.remove("no-display");
+      puntosGanados2.textContent = window.puntosGanados_j2;
 
       puntosGameOver = document.querySelector("#puntosPerdidos");
-      puntosGameOver.textContent = window.puntosPerdidos;
+      puntosGameOver.textContent = window.puntosPerdidos_j1;
+      puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
+      puntosPerdidos2.classList.remove("no-display");
+      puntosPerdidos2.textContent = window.puntosPerdidos_j2;
 
-      duracionTotal = document.querySelector("#tiempoDuracion");
-      duracionTotal.textContent = window.tiempoDuracion + "s";
-
-      const tablaEstadisticas = document.querySelector("#tablaEstadisticas");
-      tablaEstadisticas.style.display = "block";
+      const duracionTotal_j1 = document.querySelector("#tiempoDuracion");
+      duracionTotal_j1.textContent = window.tiempoDuracion_j1 + "s";
+      window.duracionTotal_j2 = document.querySelector("#tiempoDuracion2");
+      duracionTotal_j2.classList.remove("no-display");
+      duracionTotal_j2.textContent = window.tiempoDuracion_j2 + "s";
 
       presicion = document.querySelector("#presicion");
-      porcentajePrecision = 100;
-      porcentajePrecision = (aciertos / totalLetras) * 100;
-
-      if (totalLetras == 0) {
+      porcentajePrecision_j1 = (aciertos_j1 / totalLetras_j1) * 100;
+      porcentajePrecision_j2 = (aciertos_j2 / totalLetras_j2) * 100;
+      if (totalLetras_j1 == 0) {
          porcentajePrecision.textContent = "0%";
       } else {
-         presicion.textContent = porcentajePrecision.toFixed(0) + "%";
+         presicion.textContent = porcentajePrecision_j1.toFixed(0) + "%";
+      }
+
+      presicion_j2 = document.querySelector("#presicion2");
+      presicion_j2.classList.remove("no-display");
+      porcentajePrecision_j2 = (aciertos_j2 / totalLetras_j2) * 100;
+      if (totalLetras_j2 == 0) {
+         porcentajePrecision_j2.textContent = "0%";
+      } else {
+         presicion_j2.textContent = porcentajePrecision_j2.toFixed(0) + "%";
       }
    }
 }
@@ -1449,8 +1657,26 @@ multijugador.addEventListener("click", function () {
    addWord.classList.remove("no-display");
    addWord.classList.add("addWord");
 
+   window.aciertos_j1 = 0;
+   window.errores_j1 = 0;
+   window.totalLetras_j1 = 0;
+   window.puntosGanados_j1 = 0;
+   window.puntosPerdidos_j1 = 0;
+   window.tiempoDuracion_j1 = 0;
+   window.puntuacion_j1 = 0;
+
+   window.aciertos_j2 = 0;
+   window.errores_j2 = 0;
+   window.totalLetras_j2 = 0;
+   window.puntosGanados_j2 = 0;
+   window.puntosPerdidos_j2 = 0;
+   window.tiempoDuracion_j2 = 0;
+   window.puntuacion_j2 = 0;
+   window.gana_player = document.querySelector(".state-nodisplay4");
+
    window.contTurnos = 0;
    window.jugadorEstado = false;
+   window.turnoJugador = document.querySelector(".state-nodisplay2");
 });
 
 const cancelar = document.querySelector("#cancelar");
