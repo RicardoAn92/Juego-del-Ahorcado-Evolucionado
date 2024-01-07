@@ -1103,6 +1103,8 @@ newgame.addEventListener("click", function () {
       puntuacionValor = inicial;
       nivel = 1;
       document.getElementById("nivelValor").textContent = window.nivel;
+
+      tiempoDuracion = 0;
       newGame();
    } else {
       window.newTurno = document.querySelector(".state-nodisplay5");
@@ -1118,6 +1120,9 @@ newgame.addEventListener("click", function () {
       newTurno.append(turno);
       newTurno.append(jugador);
       newTurno.classList.add("stateAnimation", "youWin");
+
+      tiempoDuracion_j1 = 0;
+      tiempoDuracion_j2 = 0;
 
       if (dificultadElegida === "Facil") {
          countdownElement.textContent = 30;
@@ -1336,10 +1341,31 @@ function startCountdown(duration) {
          updateCountdown(seconds);
       } else {
          if (jugadorEstado == false) {
-            contTurnos % 2 == 0 ? tiempoDuracion_j2++ : tiempoDuracion_j1++;
-            youWin();
+            play3("audio/lose.mp3");
+            contTurnos % 2 == 0 ? tiempoDuracion_j2-- : tiempoDuracion_j1--;
+            window.gana_player = document.querySelector(".state-nodisplay4");
+            gana_player.classList.remove("state-nodisplay4");
+            const gana = document.createElement("div");
+            gana.style.fontSize = "4.5rem";
+            gana.textContent = "Gana";
+
+            const player = document.createElement("div");
+            player.style.fontSize = "4.5rem";
+            player.textContent = contTurnos % 2 == 0 ? jugador1 : jugador2;
+
+            gana_player.append(gana);
+            gana_player.append(player);
+            gana_player.classList.add("stateAnimation", "youWin");
+            clearInterval(countdownInterval);
+            deteccionTeclasActivada = true;
+
+            setTimeout(function () {
+               deteccionTeclasActivada = false;
+               gana_player.classList.add("state-nodisplay4");
+               calcularEstadisticas();
+            }, 4000);
          } else {
-            tiempoDuracion++;
+            tiempoDuracion--;
             gameOver();
          }
          return;
@@ -1651,7 +1677,7 @@ function calcularEstadisticas() {
       porcentajePrecision = (aciertos / totalLetras) * 100;
 
       if (totalLetras == 0) {
-         porcentajePrecision.textContent = "0%";
+         presicion.textContent = "100%";
       } else {
          presicion.textContent = porcentajePrecision.toFixed(0) + "%";
       }
@@ -1705,9 +1731,8 @@ function calcularEstadisticas() {
 
       presicion = document.querySelector("#presicion");
       porcentajePrecision_j1 = (aciertos_j1 / totalLetras_j1) * 100;
-      porcentajePrecision_j2 = (aciertos_j2 / totalLetras_j2) * 100;
       if (totalLetras_j1 == 0) {
-         porcentajePrecision.textContent = "0%";
+         presicion.textContent = "100%";
       } else {
          presicion.textContent = porcentajePrecision_j1.toFixed(0) + "%";
       }
@@ -1716,7 +1741,7 @@ function calcularEstadisticas() {
       presicion_j2.classList.remove("no-display");
       porcentajePrecision_j2 = (aciertos_j2 / totalLetras_j2) * 100;
       if (totalLetras_j2 == 0) {
-         porcentajePrecision_j2.textContent = "0%";
+         presicion_j2.textContent = "100%";
       } else {
          presicion_j2.textContent = porcentajePrecision_j2.toFixed(0) + "%";
       }
