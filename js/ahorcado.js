@@ -8,13 +8,19 @@ window.categorias = {
       "Instrumentos Musicales",
       "Computación",
    ],
-   Dificil: ["Películas", "Ciudades", "Cuerpo Humano", "Elementos Químicos"],
+   Dificil: [
+      "Películas",
+      "Ciudades",
+      "Cuerpo Humano",
+      "Elementos Químicos",
+      "Personajes",
+   ],
 };
 
 window.palabrasPorCategoria = {
    //# FACIL
    Animales: [
-      "Tigre",
+      "Camaleón",
       "Elefante",
       "Jirafa",
       "Tiburón",
@@ -22,6 +28,7 @@ window.palabrasPorCategoria = {
       "Cocodrilo",
       "Perro",
       "Murciélago",
+      "Gato",
    ],
    Frutas: ["Manzana", "Piña", "Papaya", "Fresa", "Kiwi", "Mango", "Sandía"],
    Colores: ["Rojo", "Azul", "Verde", "Amarillo", "Morado", "Celeste"],
@@ -107,6 +114,15 @@ window.palabrasPorCategoria = {
       "Plata",
       "Plomo",
    ],
+   Personajes: [
+      "Homero Simpson",
+      "Bart Simpson",
+      "Buzz Lightyear",
+      "Mickey Mouse",
+      "Bob Esponja",
+      "Patricio",
+      "Calamardo",
+   ],
 };
 
 var intento = 0;
@@ -122,7 +138,7 @@ let audio2 = null;
 
 function pistas() {
    const categoriaDiv = document.getElementById("categoria");
-   const audioPista = document.querySelector("#audioPista");
+   window.audioPista = document.querySelector("#audioPista");
    categoriaDiv.classList.remove("no-display");
    audioPista.classList.add("no-display");
 
@@ -134,6 +150,46 @@ function pistas() {
       categoriaDiv.classList.add("no-display");
       audioPista.classList.remove("no-display");
       audioPista.src = "../audio/audio-palabras/tren.mp3";
+   } else if (palabra === "Homero Simpson") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/homero.mp3";
+   } else if (palabra === "Bart Simpson") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/bart.mp3";
+   } else if (palabra === "Buzz Lightyear") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/buzz lightyear.mp3";
+   } else if (palabra === "Mickey Mouse") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/mickey mouse.mp3";
+   } else if (palabra === "Bob Esponja") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/bob esponja.mp3";
+   } else if (palabra === "Patricio Estrella") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/patricio.mp3";
+   } else if (palabra === "Calamardo") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/calamardo.mp3";
+   } else if (palabra === "Gato") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/gato.mp3";
+   } else if (palabra === "Helicóptero") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/helicoptero.mp3";
+   } else if (palabra === "Lluvia") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/lluvia.mp3";
    } else if (palabra === "Flauta") {
       categoriaDiv.classList.add("no-display");
       audioPista.classList.remove("no-display");
@@ -150,6 +206,10 @@ function pistas() {
       categoriaDiv.classList.add("no-display");
       audioPista.classList.remove("no-display");
       audioPista.src = "../audio/audio-palabras/guitarra.mp3";
+   } else if (palabra === "Mouse") {
+      categoriaDiv.classList.add("no-display");
+      audioPista.classList.remove("no-display");
+      audioPista.src = "../audio/audio-palabras/mouse.mp3";
    } else if (palabra === "Sandía") {
       categoriaDiv.textContent = "Es verde por fuera y roja por dentro";
    } else if (palabra === "Teclado") {
@@ -167,6 +227,25 @@ function pistas() {
    } else if (palabra === "Francia") {
       categoriaDiv.textContent =
          "En Europa, conocido por la Torre Eiffel y baguettes";
+   } else if (palabra === "Camaleón") {
+      categoriaDiv.textContent = "Un reptil que puede cambiar de color";
+   } else if (palabra === "Oxígeno") {
+      categoriaDiv.textContent = "Elemento presente en el agua";
+   } else if (palabra === "Corazón") {
+      categoriaDiv.textContent = "Órgano que bombea sangre";
+   } else if (palabra === "Abogado") {
+      categoriaDiv.textContent = "Lucha por justicia y leyes. ¿Quién es?";
+   } else if (palabra === "Bombero") {
+      categoriaDiv.textContent = "Combate el fuego, héroe sin capa. ¿Quién es?";
+   } else if (palabra === "Titanic") {
+      categoriaDiv.textContent =
+         "Gigante en el océano, trágico hundimiento. ¿Cuál es el barco?";
+   } else if (palabra === "Hockey") {
+      categoriaDiv.textContent =
+         "Disco deslizante, palos y patines, ¿qué deporte es?";
+   } else if (palabra === "Fresa") {
+      categoriaDiv.textContent =
+         "Roja y dulce, en la planta crece. ¿Qué fruta soy?";
    } else {
       categoriaDiv.textContent = categoriaRandom;
    }
@@ -331,7 +410,6 @@ function initGame() {
       jugador.textContent = contTurnos % 2 == 0 ? jugador1 : jugador2;
 
       contTurnos++;
-      console.log(contTurnos);
 
       turnoJugador.append(turno);
       turnoJugador.append(jugador);
@@ -1113,36 +1191,38 @@ abandonar.addEventListener("click", function () {
 
    deteccionTeclasActivada = true;
 
-   jugador1 = document.querySelector("#jugador1");
-   jugador1.textContent = "Valor";
+   if (jugadorEstado == false) {
+      jugador1 = document.querySelector("#jugador1");
+      jugador1.textContent = "Valor";
 
-   jugador2 = document.querySelector("#jugador2");
-   jugador2.classList.add("no-display");
+      jugador2 = document.querySelector("#jugador2");
+      jugador2.classList.add("no-display");
 
-   letrasAcertadas_j2 = document.querySelector("#letrasAcertadas2");
-   letrasAcertadas_j2.classList.add("no-display");
+      letrasAcertadas_j2 = document.querySelector("#letrasAcertadas2");
+      letrasAcertadas_j2.classList.add("no-display");
 
-   letrasIncorrectas_j2 = document.querySelector("#letrasIncorrectas2");
-   letrasIncorrectas_j2.classList.add("no-display");
+      letrasIncorrectas_j2 = document.querySelector("#letrasIncorrectas2");
+      letrasIncorrectas_j2.classList.add("no-display");
 
-   presicion_j2 = document.querySelector("#presicion2");
-   presicion_j2.classList.add("no-display");
+      presicion_j2 = document.querySelector("#presicion2");
+      presicion_j2.classList.add("no-display");
 
-   puntuacionEst_j2 = document.querySelector("#puntuacionEst2");
-   puntuacionEst_j2.classList.add("no-display");
+      puntuacionEst_j2 = document.querySelector("#puntuacionEst2");
+      puntuacionEst_j2.classList.add("no-display");
 
-   puntosGanados2 = document.querySelector("#puntosGanados2");
-   puntosGanados2.classList.add("no-display");
+      puntosGanados2 = document.querySelector("#puntosGanados2");
+      puntosGanados2.classList.add("no-display");
 
-   puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
-   puntosPerdidos2.classList.add("no-display");
+      puntosPerdidos2 = document.querySelector("#puntosPerdidos2");
+      puntosPerdidos2.classList.add("no-display");
 
-   duracionTotal_j2 = document.querySelector("#tiempoDuracion2");
-   duracionTotal_j2.classList.add("no-display");
+      duracionTotal_j2 = document.querySelector("#tiempoDuracion2");
+      duracionTotal_j2.classList.add("no-display");
 
-   gana_player.classList.add("no-display");
+      gana_player.classList.add("no-display");
+      turnoJugador.classList.add("state-nodisplay2");
+   }
 
-   turnoJugador.classList.add("state-nodisplay2");
    window.abandonarEstado = true;
 });
 
@@ -1278,6 +1358,7 @@ let pausaButton = document.getElementById("pausasvg");
 
 pausaButton.addEventListener("click", function () {
    play4("../audio/click.mp3");
+   audioPista.pause();
    fondoOscuro.style.display = "block";
 
    window.pausaEstado = true;
