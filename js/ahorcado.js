@@ -1100,10 +1100,17 @@ newgame.addEventListener("click", function () {
 
    if (jugadorEstado == true) {
       play4("../audio/click.mp3");
-      puntuacionValor = inicial;
-      nivel = 1;
       document.getElementById("nivelValor").textContent = window.nivel;
 
+      puntuacionValor = inicial;
+      nivel = 1;
+      tiempoDuracion = 0;
+      aciertos = 0;
+      errores = 0;
+      puntosGanados = 0;
+      puntosPerdidos = 0;
+      tiempoDuracion = 0;
+      totalLetras = 0;
       tiempoDuracion = 0;
       newGame();
    } else {
@@ -1124,12 +1131,37 @@ newgame.addEventListener("click", function () {
       tiempoDuracion_j1 = 0;
       tiempoDuracion_j2 = 0;
 
+      aciertos_j1 = 0;
+      errores_j1 = 0;
+      totalLetras_j1 = 0;
+      puntosGanados_j1 = 0;
+      puntosPerdidos_j1 = 0;
+      tiempoDuracion_j1 = 0;
+
+      aciertos_j2 = 0;
+      errores_j2 = 0;
+      totalLetras_j2 = 0;
+      puntosGanados_j2 = 0;
+      puntosPerdidos_j2 = 0;
+      tiempoDuracion_j2 = 0;
+      puntuacion_j2 = 0;
+      contTurnos = 0;
+
+      // puntuacion_j1 = 0;
+      // puntuacion_j2 = 0;
+
       if (dificultadElegida === "Facil") {
          countdownElement.textContent = 30;
+         puntuacionValor_j1 = 70;
+         puntuacionValor_j2 = 70;
       } else if (dificultadElegida === "Medio") {
          countdownElement.textContent = 25;
+         puntuacionValor_j1 = 60;
+         puntuacionValor_j2 = 60;
       } else if (dificultadElegida === "Dificil") {
          countdownElement.textContent = 20;
+         puntuacionValor_j1 = 50;
+         puntuacionValor_j2 = 50;
       }
 
       setTimeout(function () {
@@ -1139,7 +1171,6 @@ newgame.addEventListener("click", function () {
          // newTurno.classList.remove(".stateAnimation");
          newTurno.classList = "state-nodisplay5";
          removeChilds(newTurno);
-         contTurnos++;
          newGame();
       }, 4500);
    }
@@ -1574,7 +1605,6 @@ medio.addEventListener("click", function () {
       puntuacionValorElement.textContent = puntuacion_j1;
       document.getElementById("nivelTexto").textContent = "Turno de: ";
       document.getElementById("nivelValor").textContent = jugador1;
-      window.maxNivel = 4;
       turnoJugador.classList.add("state-nodisplay2");
 
       addWord.classList.add("no-display");
