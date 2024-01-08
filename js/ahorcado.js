@@ -610,6 +610,13 @@ function updatePuntuacion() {
          return;
       }
    } else {
+      if (window.puntuacionValor_j1 < 0) {
+         window.puntuacionValor_j1 = 0;
+      }
+      if (window.puntuacionValor_j2 < 0) {
+         window.puntuacionValor_j2 = 0;
+      }
+
       const puntuacionValorElement = document.getElementById("puntuacionValor");
       contTurnos % 2 == 0
          ? (puntuacionValorElement.textContent = puntuacionValor_j2)
@@ -617,9 +624,8 @@ function updatePuntuacion() {
 
       if (window.puntuacionValor_j1 == 0) {
          play3("audio/lose.mp3");
-         deteccionTeclasActivada = true;
-         window.gana_player = document.querySelector(".state-nodisplay4");
-         gana_player.classList.remove("state-nodisplay4");
+         window.endgame = true;
+         gana_player.classList.add("state-nodisplay4");
          const gana = document.createElement("div");
          gana.style.fontSize = "4.5rem";
          gana.textContent = "Gana";
@@ -634,7 +640,6 @@ function updatePuntuacion() {
          clearInterval(countdownInterval);
 
          setTimeout(function () {
-            deteccionTeclasActivada = false;
             gana_player.classList.add("state-nodisplay4");
             calcularEstadisticas();
          }, 4000);
@@ -643,8 +648,7 @@ function updatePuntuacion() {
 
       if (window.puntuacionValor_j2 == 0) {
          play3("audio/lose.mp3");
-         deteccionTeclasActivada = true;
-         window.gana_player = document.querySelector(".state-nodisplay4");
+         gana_player.classList.add("state-nodisplay4");
          gana_player.classList.remove("state-nodisplay4");
          const gana = document.createElement("div");
          gana.style.fontSize = "4.5rem";
@@ -658,9 +662,9 @@ function updatePuntuacion() {
          gana_player.append(player);
          gana_player.classList.add("stateAnimation", "youWin");
          clearInterval(countdownInterval);
+         window.endgame = true;
 
          setTimeout(function () {
-            deteccionTeclasActivada = false;
             gana_player.classList.add("state-nodisplay4");
             calcularEstadisticas();
          }, 4000);
@@ -893,7 +897,7 @@ function drawGame() {
          contTurnos % 2 == 0 ? (puntuacion_j1 -= 10) : (puntuacion_j2 -= 10);
          play3("audio/lose.mp3");
          deteccionTeclasActivada = true;
-         window.gana_player = document.querySelector(".state-nodisplay4");
+         gana_player.classList.add("state-nodisplay4");
          gana_player.classList.remove("state-nodisplay4");
          const gana = document.createElement("div");
          gana.style.fontSize = "4.5rem";
@@ -1150,6 +1154,9 @@ newgame.addEventListener("click", function () {
       // puntuacion_j1 = 0;
       // puntuacion_j2 = 0;
 
+      gana_player.classList = "state-nodisplay4";
+      removeChilds(gana_player);
+
       if (dificultadElegida === "Facil") {
          countdownElement.textContent = 30;
          puntuacionValor_j1 = 70;
@@ -1164,15 +1171,16 @@ newgame.addEventListener("click", function () {
          puntuacionValor_j2 = 50;
       }
 
-      setTimeout(function () {
-         // newTurno = document.querySelector(".stateAnimation");
-         // newTurno.classList.remove(".gameOver");
-         // newTurno.classList.remove(".youWin");
-         // newTurno.classList.remove(".stateAnimation");
-         newTurno.classList = "state-nodisplay5";
-         removeChilds(newTurno);
-         newGame();
-      }, 4500);
+      newTurno.classList = "state-nodisplay5";
+      removeChilds(newTurno);
+
+      if (dificultad == 0) {
+         facil.click();
+      } else if (dificultad == 1) {
+         medio.click();
+      } else if (dificultad == 2) {
+         dificil.click();
+      }
    }
 });
 abandonar.addEventListener("click", function () {
@@ -1255,7 +1263,9 @@ abandonar.addEventListener("click", function () {
       duracionTotal_j2 = document.querySelector("#tiempoDuracion2");
       duracionTotal_j2.classList.add("no-display");
 
-      gana_player.classList.add("no-display");
+      gana_player.classList = "state-nodisplay4";
+      removeChilds(gana_player);
+
       turnoJugador.classList.add("state-nodisplay2");
    }
 
@@ -1372,9 +1382,10 @@ function startCountdown(duration) {
          updateCountdown(seconds);
       } else {
          if (jugadorEstado == false) {
+            window.endgame = true;
             play3("audio/lose.mp3");
             contTurnos % 2 == 0 ? tiempoDuracion_j2-- : tiempoDuracion_j1--;
-            window.gana_player = document.querySelector(".state-nodisplay4");
+            gana_player.classList.add("state-nodisplay4");
             gana_player.classList.remove("state-nodisplay4");
             const gana = document.createElement("div");
             gana.style.fontSize = "4.5rem";
